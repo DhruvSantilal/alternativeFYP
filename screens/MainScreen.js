@@ -60,7 +60,7 @@ export default function MainScreen({ navigation }) {
             <Text style={styles.buttonText}>test api</Text>
         </TouchableOpacity>
 
-        <View styles={styles.sampleView}>
+        <View styles= {styles.sampleView}>
           {/* <Text>{JSON.stringify(receipeNutritionData.results)}</Text>  */}
 
           <FlatList
