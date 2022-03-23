@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   header: {
     height: 60,
     padding:15,
-    backgroundColor: 'green',
+    backgroundColor: '#6B9080',
   },
   text:{
       color: 'black',

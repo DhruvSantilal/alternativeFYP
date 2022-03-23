@@ -48,9 +48,8 @@ const handleSignUp = () => {
      
           
       
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior="height" enabled
+    <View  style={styles.container}
+      behavior="padding" enabled
     >
         {/* <Header style={styles.headerContainer} title={'Activity Log'} /> */}
 
@@ -93,7 +92,7 @@ const handleSignUp = () => {
             </TouchableOpacity>
         </View>
         
-    </KeyboardAvoidingView>
+    </View>
   )
 }
 
