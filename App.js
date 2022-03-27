@@ -5,9 +5,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
-import MainScreen from "./screens/MainScreen";
+import SearchScreen from "./screens/SearchScreen";
 import HomeScreen from "./screens/HomeScreen";
-import MainContainer from "./MainContainer";
+import RecipeScreen from "./screens/RecipeScreen";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -16,14 +17,15 @@ export default function App() {
     // <MainContainer/>
     <NavigationContainer style={styles.container}>
       <Stack.Navigator
-        initialRouteName="Main"
+        initialRouteName="Recipe"
         screenOptions={{
           headerShown: false,
         }}
       >
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Main" component={MainScreen} />
+        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen name="Recipe" component={RecipeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

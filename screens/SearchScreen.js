@@ -9,9 +9,11 @@ import {
   ActivityIndicator,
   FlatList,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   SearchBar,
 } from "react-native";
 import Header from "../components/Header";
+import Footer from "./../components/Footer";
 
 // import uuid from 'react-native-uuid';
 // const { v4: uuidv4 } = require('uuid');
@@ -19,20 +21,22 @@ import Header from "../components/Header";
 
 import axios from "axios";
 
-export default function MainScreen({ navigation }) {
+export default function SearchScreen({ navigation }) {
   const [receipeNutritionData, setReceipeNutritionData] = useState({
     results: [],
   });
+  // const [receipeNutritionDataOnly, setReceipeNutritionDataOnly] = useState({});
   const [recipeImageUri, setRecipeImageUri] = useState(
     "https://spoonacular.com/recipeImages/"
   );
   const [showFlatlist, setShowFlatlist] = useState(false);
 
   const [query, setQuery] = useState("noodles");
+  // const [id, setID] = useState("479101");
 
   const getRecepies = () => {
     // const query = "noodles";
-    const number = "1";
+    const number = "4";
 
     const options = {
       method: "GET",
@@ -57,6 +61,30 @@ export default function MainScreen({ navigation }) {
     return axios(options);
   };
 
+  // const getRecepiesNutrition = () => {
+  //   // const query = "noodles";
+
+  //   const options = {
+  //     method: "GET",
+  //     url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/nutritionWidget.json`,
+  //     headers: {
+  //       "x-rapidapi-host":
+  //         "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+  //       "x-rapidapi-key": "e1a04f8dc2mshabb4ed58208d983p1f67c4jsn730b5adbd4eb",
+  //     },
+  //     transformResponse: [
+  //       (data) => {
+  //         // transform the response
+  //         console.log(data);
+  //         let jsonData = JSON.parse(data);
+  //         console.log("This is json type", typeof jsonData);
+  //         setReceipeNutritionDataOnly(jsonData);
+  //         console.log(receipeNutritionDataOnly);
+  //       },
+  //     ],
+  //   };
+  //   return axios(options);
+  // };
   return (
     <SafeAreaView style={styles.container}>
       <Header />
@@ -72,7 +100,7 @@ export default function MainScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <View styles={styles.sampleView}>
+      <View style={styles.sampleView}>
         {/* <Text>{JSON.stringify(receipeNutritionData.results)}</Text>  */}
 
         <FlatList
@@ -80,22 +108,30 @@ export default function MainScreen({ navigation }) {
           keyExtractor={(item) => item.id}
           style={styles.flatlistStyle}
           renderItem={({ item }) => (
-            <View>
-              <Text style={styles.text}>{item.title}</Text>
+            <View style={styles.flatlistView}>
+              <Text style={styles.textTitle}>{item.title}</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Recipe", item.id)}
+              >
+                <Image
+                  style={styles.img}
+                  source={{ uri: recipeImageUri + item.image }}
+                />
+              </TouchableOpacity>
+              <Text style={styles.text}>{"Calories: " + item.id}</Text>
+              {/* <Text style={styles.text}>{`${getRecepiesNutrition(
+                item.id
+              )}`}</Text> */}
 
               <Text style={styles.text}>
-                {"Time(m): " + item.readyInMinutes}
+                {"Time: " + item.readyInMinutes + " mins"}
               </Text>
-
               <Text style={styles.text}>{"Servings: " + item.servings}</Text>
-              <Image
-                style={styles.img}
-                source={{ uri: recipeImageUri + item.image }}
-              />
             </View>
           )}
         />
       </View>
+      <Footer />
     </SafeAreaView>
   );
 }
@@ -111,9 +147,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
   },
+  textTitle: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "black",
+    justifyContent: "center",
+  },
   textSearchbar: {
     color: "black",
-    paddingTop: 25,
+    paddingTop: 10,
     fontSize: 17,
     fontWeight: "500",
   },
@@ -147,14 +189,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   sampleView: {
-    paddingTop: 50,
-    backgroundColor: "green",
+    width: "100%",
+    flexGrow: 1,
+    flex: 1,
+    paddingBottom: 5,
   },
   img: {
     width: "100%",
-    height: 58,
+    height: 150,
   },
   flatlistStyle: {
-    paddingTop: 30,
+    flexGrow: 1,
+  },
+  flatlistView: {
+    paddingTop: 10,
+    paddingBottom: 10,
   },
 });

@@ -11,26 +11,15 @@ import {
 // import { useNavigation } from "@react-navigation/core";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Header() {
+export default function Footer() {
   const navigation = useNavigation();
   return (
     <View style={styles.Container}>
       <View style={styles.imageContainer}>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image
-            style={styles.imageHome}
-            source={require("../asset/home.png")}
-          />
-        </TouchableOpacity>
-
-        <Image
-          style={styles.imageLogo}
-          source={require("../asset/alternative.png")}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate("Search")}>
-          <Image
-            style={styles.imageSearch}
-            source={require("../asset/search.png")}
+            style={styles.imageInformation}
+            source={require("../asset/information.png")}
           />
         </TouchableOpacity>
       </View>
@@ -42,18 +31,18 @@ const styles = StyleSheet.create({
   Container: {
     width: "100%",
     height: 70,
-    padding: 15,
     backgroundColor: "#6B9080",
   },
   imageContainer: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    justifyContent: "center",
   },
-  imageHome: {
+  imageInformation: {
     marginTop: 15,
-    height: 27,
-    width: 50,
+    height: 40,
+    width: 40,
     justifyContent: "center",
     alignContent: "center",
     resizeMode: "contain",
