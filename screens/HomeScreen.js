@@ -5,10 +5,10 @@ import { auth } from "../firebase";
 import MainContainer from "./../MainContainer";
 import Header from "./../components/Header";
 import Footer from "./../components/Footer";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 export default function HomeScreen({ navigation }) {
-  // const navigation = useNavigation()
-
   const handleSignOut = () => {
     auth
       .signOut()
@@ -17,7 +17,6 @@ export default function HomeScreen({ navigation }) {
       })
       .catch((error) => alert(error.message));
   };
-
 
   return (
     <View style={styles.container}>
@@ -33,13 +32,14 @@ export default function HomeScreen({ navigation }) {
             PRESS HERE {"\n"}to start searching your favorite food
           </Text>
         </TouchableOpacity>
+
         <Text style={styles.loggedinText}>Logged in as:</Text>
         <Text style={styles.text}>Email: {auth.currentUser?.email}</Text>
         <TouchableOpacity onPress={handleSignOut} style={styles.logoutButton}>
           <Text style={styles.buttonText}>Sign out</Text>
         </TouchableOpacity>
       </View>
-      <Footer/>
+      <Footer />
     </View>
   );
 }
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,
-    marginBottom:90,
+    marginBottom: 90,
     height: 80,
   },
   buttonText: {

@@ -16,10 +16,22 @@ export default function Footer() {
   return (
     <View style={styles.Container}>
       <View style={styles.imageContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Information")}>
           <Image
             style={styles.imageInformation}
             source={require("../asset/information.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Calculator")}>
+          <Image
+            style={styles.imageInformation}
+            source={require("../asset/calculator.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+          <Image
+            style={styles.imageInformation}
+            source={require("../asset/settings.png")}
           />
         </TouchableOpacity>
       </View>
@@ -36,11 +48,11 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+    alignItems: "center",
   },
   imageInformation: {
-    marginTop: 15,
+    // marginTop: 10,
     height: 40,
     width: 40,
     justifyContent: "center",

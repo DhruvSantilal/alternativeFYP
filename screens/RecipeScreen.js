@@ -9,24 +9,33 @@ import {
   ActivityIndicator,
   FlatList,
   TouchableOpacity,
+  ScrollView,
   SearchBar,
 } from "react-native";
 import Header from "../components/Header";
 import axios from "axios";
 import Footer from "./../components/Footer";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-export default function RecipeScreen({ navigation }) {
+export default function RecipeScreen({ route, navigation }) {
+  const { item } = route.params;
   const [receipeNutritionData, setReceipeNutritionData] = useState({});
   const [receipeNutritionDataOnly, setReceipeNutritionDataOnly] = useState({});
   const [recipeImageUri, setRecipeImageUri] = useState(
     "https://spoonacular.com/recipeImages/"
   );
   const [showFlatlist, setShowFlatlist] = useState(false);
-
+  const [id, setID] = useState(item.id);
   const [query, setQuery] = useState("noodles");
-  const [id, setID] = useState("479101");
+
+  const [receipesLoaded, setReceipesLoaded] = useState(false);
 
   //   getting the recipe info
+  useEffect(() => {
+    getRecepiesInformation();
+  }, []);
+
   const getRecepiesInformation = () => {
     // const query = "noodles";
     const number = "1";
@@ -48,6 +57,7 @@ export default function RecipeScreen({ navigation }) {
           console.log("This is json type", typeof jsonData);
           setRecipeImageUri(jsonData.baseUri);
           setReceipeNutritionData(jsonData);
+          setReceipesLoaded(true);
         },
       ],
     };
@@ -80,51 +90,76 @@ export default function RecipeScreen({ navigation }) {
     return axios(options);
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <Header />
-      <Text style={styles.textSearchbar}>Results for your food</Text>
-      <View style={styles.searchbarContainer}>
-        <TextInput
-          style={styles.input}
-          onChangeText={setID}
-          placeholder="e.g 125641"
-        />
-        <TouchableOpacity
-          onPress={getRecepiesNutrition || getRecepiesInformation}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Search </Text>
-        </TouchableOpacity>
-      </View>
+  const renderNoReceipes = () => {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Header />
+        <Text style={styles.textSearchbar}>No receipes...</Text>
 
-      <View style={styles.sampleView}>
-        {/* <Text>{JSON.stringify(receipeNutritionData.results)}</Text>  */}
-        <Text style={styles.infoText}>{"id: " + receipeNutritionData.id}</Text>
-        <Text style={styles.infoText}>
-          {"title: " + receipeNutritionData.title}
-        </Text>
-        <Text style={styles.infoText}>
-          {"Calories: " + receipeNutritionDataOnly.calories}
-        </Text>
-        <Text style={styles.infoText}>
-          {"healthscore: " + receipeNutritionData.healthScore}
-        </Text>
+        <Footer style={styles.footer} />
+      </SafeAreaView>
+    );
+  };
 
-        <Text style={styles.infoText}>
-          {"carbs: " + receipeNutritionDataOnly.carbs}
-        </Text>
-        <Text style={styles.infoText}>
-          {"Fat: " + receipeNutritionDataOnly.fat}
-        </Text>
-        <Text style={styles.infoText}>
-          {"Protein: " + receipeNutritionDataOnly.protein}
-        </Text>
-        <Text style={styles.infoText}>
-          {"Instructions: " + receipeNutritionData.instructions}
-        </Text>
+  const renderReceipes = () => {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Header />
+        <Text style={styles.textSearchbar}>Results for your food</Text>
+        <Text style={styles.textSearchbar}>{item.id}</Text>
 
-        {/* <FlatList
+        <ScrollView>
+          {/* <View style={styles.searchbarContainer}>
+          <TextInput
+            style={styles.input}
+            onChangeText={setID}
+            placeholder="e.g 125641"
+          />
+          <TouchableOpacity
+            onPress={getRecepiesInformation}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Search </Text>
+          </TouchableOpacity>
+        </View> */}
+
+          <View style={styles.sampleView}>
+            {/* <Text>{JSON.stringify(receipeNutritionData.results)}</Text>  */}
+            <Text style={styles.infoText}>
+              {"id: " + receipeNutritionData.id}
+            </Text>
+            <Text style={styles.infoText}>
+              {"title: " + receipeNutritionData.title}
+            </Text>
+            <Text style={styles.infoText}>
+              {"Calories: " +
+                receipeNutritionData.nutrition.nutrients[0].amount +
+                receipeNutritionData.nutrition.nutrients[0].unit}
+            </Text>
+            <Text style={styles.infoText}>
+              {"healthscore: " + receipeNutritionData.healthScore}
+            </Text>
+
+            <Text style={styles.infoText}>
+              {"carbs: " +
+                receipeNutritionData.nutrition.nutrients[3].amount +
+                receipeNutritionData.nutrition.nutrients[3].unit}
+            </Text>
+            <Text style={styles.infoText}>
+              {"Fat: " +
+                receipeNutritionData.nutrition.nutrients[2].amount +
+                receipeNutritionData.nutrition.nutrients[2].unit}
+            </Text>
+            <Text style={styles.infoText}>
+              {"Protein: " +
+                receipeNutritionData.nutrition.nutrients[8].amount +
+                receipeNutritionData.nutrition.nutrients[8].unit}
+            </Text>
+            <Text style={styles.infoText}>
+              {"Instructions: " + receipeNutritionData.instructions}
+            </Text>
+
+            {/* <FlatList
           data={receipeNutritionData}
           // keyExtractor={(item) => item.id}
           style={styles.flatlistStyle}
@@ -147,10 +182,23 @@ export default function RecipeScreen({ navigation }) {
             </View>
           )}
         /> */}
-      </View>
-      <Footer style={styles.footer} />
-    </SafeAreaView>
-  );
+          </View>
+        </ScrollView>
+
+        <Footer style={styles.footer} />
+      </SafeAreaView>
+    );
+  };
+
+  const render = () => {
+    if (receipesLoaded) {
+      return renderReceipes();
+    } else {
+      return renderNoReceipes();
+    }
+  };
+
+  return render();
 }
 
 const styles = StyleSheet.create({
