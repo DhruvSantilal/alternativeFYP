@@ -101,63 +101,221 @@ export default function RecipeScreen({ route, navigation }) {
     );
   };
 
+  const getHealthScoreColour = (score) => {
+    if (score < 30) {
+      return "red";
+    } else if (score >= 30 && score <= 70) {
+      return "orange";
+    } else {
+      return "green";
+    }
+  };
+
+  const getIngredients = (ingredientsList) => {
+    console.log(ingredientsList.length);
+    return (
+      <View>
+        {ingredientsList.map((ingredient) => {
+          return (
+            <View style={{ flex: 1, flexDirection: "row", width: "100%" }}>
+              <Text style={{ fontSize: 20 }}>{ingredient.original}</Text>
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
+
+  const renderNutritionItem = (itemName, itemData) => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          width: "100%",
+          borderBottomColor: "black",
+          borderBottomWidth: 1,
+        }}
+      >
+        <Text
+          style={{
+            textAlign: "left",
+            fontSize: 20,
+            fontWeight: "bold",
+            padding: 3,
+            width: "50%",
+          }}
+        >
+          {itemName}
+        </Text>
+        <Text
+          style={{
+            textAlign: "right",
+            fontSize: 20,
+            width: "50%",
+          }}
+        >
+          {itemData.amount + itemData.unit}
+        </Text>
+      </View>
+    );
+  };
+
   const renderReceipes = () => {
     return (
       <SafeAreaView style={styles.container}>
         <Header />
-        <Text style={styles.textSearchbar}>Results for your food</Text>
-        <Text style={styles.textSearchbar}>{item.id}</Text>
-
+        <Text style={styles.textSearchbar}>Results for your food:</Text>
         <ScrollView>
-          {/* <View style={styles.searchbarContainer}>
-          <TextInput
-            style={styles.input}
-            onChangeText={setID}
-            placeholder="e.g 125641"
-          />
-          <TouchableOpacity
-            onPress={getRecepiesInformation}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Search </Text>
-          </TouchableOpacity>
-        </View> */}
+          <View style={{ margin: 5 }}>
+            <Text style={styles.infoTextTitle}>
+              {receipeNutritionData.title}
+            </Text>
+            <Image
+              style={styles.img}
+              source={{ uri: receipeNutritionData.image }}
+            />
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                width: "100%",
+                borderBottomColor: "black",
+                borderBottomWidth: 1,
+              }}
+            >
+              <Text style={{ fontSize: 40, fontWeight: "500" }}>
+                Nutrition Facts
+              </Text>
+            </View>
+            <View>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  width: "100%",
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: "left",
+                    fontSize: 30,
+                    width: "50%",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {"Healthscore"}
+                </Text>
+                <Text
+                  style={{
+                    textAlign: "right",
+                    width: "50%",
+                    fontSize: 30,
+                    color: getHealthScoreColour(
+                      receipeNutritionData.healthScore
+                    ),
+                  }}
+                >
+                  {receipeNutritionData.healthScore}
+                </Text>
+              </View>
 
-          <View style={styles.sampleView}>
-            {/* <Text>{JSON.stringify(receipeNutritionData.results)}</Text>  */}
-            <Text style={styles.infoText}>
-              {"id: " + receipeNutritionData.id}
-            </Text>
-            <Text style={styles.infoText}>
-              {"title: " + receipeNutritionData.title}
-            </Text>
-            <Text style={styles.infoText}>
-              {"Calories: " +
-                receipeNutritionData.nutrition.nutrients[0].amount +
-                receipeNutritionData.nutrition.nutrients[0].unit}
-            </Text>
-            <Text style={styles.infoText}>
-              {"healthscore: " + receipeNutritionData.healthScore}
-            </Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  width: "100%",
+                  borderBottomColor: "black",
+                  borderTopColor: "black",
+                  borderBottomWidth: 5,
+                  borderTopWidth: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: "left",
+                    fontSize: 30,
+                    fontWeight: "bold",
+                    padding: 3,
+                    width: "50%",
+                  }}
+                >
+                  {"Calories"}
+                </Text>
+                <Text
+                  style={{
+                    textAlign: "right",
+                    fontSize: 30,
+                    fontWeight: "bold",
+                    width: "50%",
+                  }}
+                >
+                  {receipeNutritionData.nutrition.nutrients[0].amount +
+                    receipeNutritionData.nutrition.nutrients[0].unit}
+                </Text>
+              </View>
+              {renderNutritionItem(
+                "Total Carbohydrates",
+                receipeNutritionData.nutrition.nutrients[3]
+              )}
 
-            <Text style={styles.infoText}>
-              {"carbs: " +
-                receipeNutritionData.nutrition.nutrients[3].amount +
-                receipeNutritionData.nutrition.nutrients[3].unit}
+              {renderNutritionItem(
+                "Total Fats",
+                receipeNutritionData.nutrition.nutrients[2]
+              )}
+
+              {renderNutritionItem(
+                "Protein",
+                receipeNutritionData.nutrition.nutrients[8]
+              )}
+
+              {renderNutritionItem(
+                "Fiber",
+                receipeNutritionData.nutrition.nutrients[16]
+              )}
+
+              {renderNutritionItem(
+                "Sugar",
+                receipeNutritionData.nutrition.nutrients[5]
+              )}
+
+              {renderNutritionItem(
+                "Sodium",
+                receipeNutritionData.nutrition.nutrients[7]
+              )}
+            </View>
+            <View>
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontWeight: "bold",
+                  borderBottomColor: "black",
+                  borderBottomWidth: 2,
+                }}
+              >
+                Ingredients
+              </Text>
+              {getIngredients(receipeNutritionData.extendedIngredients)}
+            </View>
+
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                borderTopColor: "black",
+                borderBottomColor: "black",
+                borderBottomWidth: 2,
+                borderTopWidth: 5,
+              }}
+            >
+              {"Instructions"}
             </Text>
-            <Text style={styles.infoText}>
-              {"Fat: " +
-                receipeNutritionData.nutrition.nutrients[2].amount +
-                receipeNutritionData.nutrition.nutrients[2].unit}
+            <Text style={{ fontSize: 20 }}>
+              {receipeNutritionData.instructions}
             </Text>
-            <Text style={styles.infoText}>
-              {"Protein: " +
-                receipeNutritionData.nutrition.nutrients[8].amount +
-                receipeNutritionData.nutrition.nutrients[8].unit}
-            </Text>
-            <Text style={styles.infoText}>
-              {"Instructions: " + receipeNutritionData.instructions}
-            </Text>
+            {/* <Text style={styles.infoText}>
+              {"Summary: " + receipeNutritionData.summary}
+            </Text> */}
 
             {/* <FlatList
           data={receipeNutritionData}
@@ -225,6 +383,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+
   input: {
     marginRight: 10,
     borderWidth: 1,
@@ -251,15 +410,23 @@ const styles = StyleSheet.create({
   sampleView: {
     marginTop: 10,
     justifyContent: "space-between",
-    padding: 10,
+
+    alignItems: "center",
   },
   img: {
     width: "100%",
-    height: 58,
+    height: 200,
+    borderRadius: 10,
   },
   infoText: {
     padding: 3,
     fontSize: 18,
+  },
+  infoTextTitle: {
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 35,
+    fontWeight: "bold",
   },
   flatlistStyle: {
     paddingTop: 30,

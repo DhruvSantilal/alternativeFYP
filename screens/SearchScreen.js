@@ -16,6 +16,7 @@ import Header from "../components/Header";
 import Footer from "./../components/Footer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// import { Icons } from "@expo/vector-icons/";
 
 // import uuid from 'react-native-uuid';
 // const { v4: uuidv4 } = require('uuid');
@@ -78,12 +79,19 @@ export default function SearchScreen({ navigation }) {
 
   const getRecepies = async () => {
     // const query = "noodles";
-    const number = "2";
+    const number = "4";
 
     const options = {
       method: "GET",
-      url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search`,
-      params: { query: query, number: number },
+      url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex`,
+      params: {
+        query: query,
+        number: number,
+        limitLicense: "false",
+        offset: "0",
+        addRecipeInformation: "true",
+        minCalories: 0.1,
+      },
       headers: apiHeaders,
       transformResponse: [
         (data) => {
@@ -91,7 +99,7 @@ export default function SearchScreen({ navigation }) {
           console.log(data);
           let jsonData = JSON.parse(data);
           console.log("This is json type", typeof jsonData);
-          setRecipeImageUri(jsonData.baseUri);
+          // setRecipeImageUri(jsonData.baseUri);
           setReceipeData(jsonData);
           setReceipesLoaded(true);
         },
@@ -100,18 +108,27 @@ export default function SearchScreen({ navigation }) {
     return axios(options);
   };
 
-  const getRecepiesInformation = async () => {
-    console.log("getting more information...");
-    console.log(receipeData.results[0].id);
-    console.log("cals:", receipeCalData);
-    for (let i = 0; i <= receipeData.results.length; i++) {
-      let rid = receipeData.results[i].id;
-      await getNutritionInformation(rid);
-      console.log("This is the rid", receipeCalData);
-      // nutritionDict
-      // console.log(nutritionDict);
+  const getHealthScoreColour = (score) => {
+    if (score < 30) {
+      return "red";
+    } else if (score >= 30 && score <= 70) {
+      return "orange";
+    } else {
+      return "green";
     }
   };
+  // const getRecepiesInformation = async () => {
+  //   console.log("getting more information...");
+  //   console.log(receipeData.results[0].id);
+  //   console.log("cals:", receipeCalData);
+  //   for (let i = 0; i <= receipeData.results.length; i++) {
+  //     let rid = receipeData.results[i].id;
+  //     await getNutritionInformation(rid);
+  //     console.log("This is the rid", receipeCalData);
+  //     // nutritionDict
+  //     // console.log(nutritionDict);
+  //   }
+  // };
 
   const getNutritionInformation = async (id) => {
     const options = {
@@ -183,11 +200,17 @@ export default function SearchScreen({ navigation }) {
               >
                 <Text style={styles.textTitle}>{item.title}</Text>
 
-                <Image
-                  style={styles.img}
-                  source={{ uri: recipeImageUri + item.image }}
-                />
-                <Text style={styles.text}>{"Calories: " + receipeCalData}</Text>
+                <Image style={styles.img} source={{ uri: item.image }} />
+                <Text style={styles.text}>{"Calories: " + item.calories}</Text>
+                <Text
+                  style={{
+                    fontSize: 26,
+                    fontWeight: "bold",
+                    color: getHealthScoreColour(item.healthScore),
+                  }}
+                >
+                  {"Health score: " + item.healthScore}
+                </Text>
                 {/* <Text style={styles.text}>{`${getRecepiesNutrition(
                 item.id
               )}`}</Text> */}
@@ -196,6 +219,11 @@ export default function SearchScreen({ navigation }) {
                   {"Time: " + item.readyInMinutes + " mins"}
                 </Text>
                 <Text style={styles.text}>{"Servings: " + item.servings}</Text>
+                {/* <Icons.Ionicons
+                  iconsname="md-checkmark-circle"
+                  size={32}
+                  color="green"
+                /> */}
               </TouchableOpacity>
             )}
           />
@@ -220,7 +248,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
-    // marginTop: 48,
   },
   text: {
     fontSize: 26,
@@ -235,12 +262,12 @@ const styles = StyleSheet.create({
   },
   textSearchbar: {
     color: "black",
-    paddingTop: 10,
+    paddingTop: 5,
     fontSize: 17,
     fontWeight: "500",
   },
   searchbarContainer: {
-    marginTop: 30,
+    marginTop: 20,
     flexDirection: "row",
     paddingLeft: 20,
     paddingRight: 20,
@@ -277,6 +304,7 @@ const styles = StyleSheet.create({
   img: {
     width: "100%",
     height: 150,
+    borderRadius: 10,
   },
   flatlistStyle: {
     flexGrow: 1,
@@ -284,5 +312,6 @@ const styles = StyleSheet.create({
   flatlistView: {
     paddingTop: 10,
     paddingBottom: 10,
+    margin: 5,
   },
 });
