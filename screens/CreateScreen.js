@@ -14,24 +14,13 @@ import {
 } from "react-native";
 import Header from "../components/Header";
 
-import Footer from "./../components/Footer";
+import Footer from "../components/Footer";
 
-export default function RecipeScreen({ navigation }) {
+export default function CreateScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <ScrollView style={styles.scrollviewContainer}>
-        <Text style={styles.text}>Information</Text>
-
-        <Image style={styles.img} source={require("../asset/nutrients.png")} />
-        <Image style={styles.img} source={require("../asset/overview.png")} />
-        <Image
-          style={styles.img}
-          source={require("../asset/caloriesInfo.png")}
-        />
-        <Image style={styles.img} source={require("../asset/nutrients1.png")} />
-        <Image style={styles.img} source={require("../asset/nutrients2.png")} />
-      </ScrollView>
+      <Text>This is a create recipes screen</Text>
       <Footer style={styles.footer} />
     </SafeAreaView>
   );
@@ -45,14 +34,9 @@ const styles = StyleSheet.create({
     // marginTop: 48,
   },
   text: {
-    textAlign: "center",
-    fontSize: 50,
+    fontSize: 26,
     fontWeight: "bold",
     color: "black",
-  },
-  scrollviewContainer: {
-    width: "100%",
-    height: "100%",
   },
   textSearchbar: {
     color: "black",
@@ -91,20 +75,19 @@ const styles = StyleSheet.create({
   },
   sampleView: {
     marginTop: 10,
-    // justifyContent: "space-between",
+    justifyContent: "space-between",
     padding: 10,
   },
   img: {
-    height: 600,
     width: "100%",
-
-    resizeMode: "contain",
+    height: 58,
   },
   infoText: {
     padding: 3,
     fontSize: 18,
   },
   flatlistStyle: {
+    paddingTop: 30,
     fontSize: 26,
     fontWeight: "bold",
     color: "black",

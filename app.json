@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.dhruvpatel24.alternativeFYP"
     },
     "web": {
       "favicon": "./assets/favicon.png"

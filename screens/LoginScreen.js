@@ -6,6 +6,7 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
@@ -48,7 +49,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container} behavior="padding" enabled>
+    <SafeAreaView style={styles.container} behavior="padding" enabled>
       {/* <Header style={styles.headerContainer} title={'Activity Log'} /> */}
 
       <View style={styles.logo}>
@@ -89,23 +90,21 @@ export default function LoginScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 100,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#EAF4F4",
+    height: "100%",
   },
   inputContainer: {
     width: "80%",
   },
   headerContainer: {
-    margin: 0,
-    padding: 0,
     justifyContent: "flex-start",
     height: 100,
     width: 100,

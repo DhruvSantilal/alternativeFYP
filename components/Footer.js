@@ -34,6 +34,12 @@ export default function Footer() {
             source={require("../asset/settings.png")}
           />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Create")}>
+          <Image
+            style={styles.imageInformation}
+            source={require("../asset/create.png")}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -11,6 +11,7 @@ import RecipeScreen from "./screens/RecipeScreen";
 import InformationScreen from "./screens/InformationScreen";
 import CalculatorScreen from "./screens/CalculatorScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import CreateScreen from "./screens/CreateScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +20,7 @@ export default function App() {
     // <Navigator/>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Search"
+        initialRouteName="Login"
         screenOptions={{
           headerShown: false,
         }}
@@ -31,6 +32,7 @@ export default function App() {
         <Stack.Screen name="Information" component={InformationScreen} />
         <Stack.Screen name="Calculator" component={CalculatorScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="Create" component={CreateScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

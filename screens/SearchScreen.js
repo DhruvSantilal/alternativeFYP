@@ -74,7 +74,7 @@ export default function SearchScreen({ navigation }) {
 
   const handleRecepies = async () => {
     await getRecepies();
-    await getRecepiesInformation();
+    // await getRecepiesInformation();
   };
 
   const getRecepies = async () => {
@@ -201,24 +201,30 @@ export default function SearchScreen({ navigation }) {
                 <Text style={styles.textTitle}>{item.title}</Text>
 
                 <Image style={styles.img} source={{ uri: item.image }} />
-                <Text style={styles.text}>{"Calories: " + item.calories}</Text>
-                <Text
-                  style={{
-                    fontSize: 26,
-                    fontWeight: "bold",
-                    color: getHealthScoreColour(item.healthScore),
-                  }}
-                >
-                  {"Health score: " + item.healthScore}
-                </Text>
-                {/* <Text style={styles.text}>{`${getRecepiesNutrition(
-                item.id
-              )}`}</Text> */}
 
-                <Text style={styles.text}>
-                  {"Time: " + item.readyInMinutes + " mins"}
-                </Text>
-                <Text style={styles.text}>{"Servings: " + item.servings}</Text>
+                <View style={styles.recipeTextContainer}>
+                  <View style={styles.recipeTextSeperator}>
+                    <Text style={styles.text}>{"Calories:           "}</Text>
+                    <Text style={styles.caloriesText}>{item.calories}</Text>
+                  </View>
+                  <View style={styles.recipeTextSeperator}>
+                    <Text
+                      style={{
+                        fontSize: 25,
+                        fontWeight: "bold",
+                        color: getHealthScoreColour(item.healthScore),
+                      }}
+                    >
+                      {"Health score: " + item.healthScore}
+                    </Text>
+                    <Text style={styles.text}>
+                      {"Time: " + item.readyInMinutes + " mins"}
+                    </Text>
+                    <Text style={styles.text}>
+                      {"Servings: " + item.servings}
+                    </Text>
+                  </View>
+                </View>
                 {/* <Icons.Ionicons
                   iconsname="md-checkmark-circle"
                   size={32}
@@ -250,12 +256,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   text: {
-    fontSize: 26,
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "black",
+  },
+  caloriesText: {
+    fontSize: 40,
     fontWeight: "bold",
     color: "black",
   },
   textTitle: {
-    fontSize: 26,
+    fontSize: 30,
     fontWeight: "bold",
     color: "black",
     justifyContent: "center",
@@ -264,7 +275,7 @@ const styles = StyleSheet.create({
     color: "black",
     paddingTop: 5,
     fontSize: 17,
-    fontWeight: "500",
+    fontWeight: "700",
   },
   searchbarContainer: {
     marginTop: 20,
@@ -310,8 +321,16 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   flatlistView: {
+    borderTopWidth: 1,
     paddingTop: 10,
     paddingBottom: 10,
     margin: 5,
+  },
+  recipeTextContainer: {
+    textAlign: "center",
+    justifyContent: "center",
+    marginTop: 5,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
 });
